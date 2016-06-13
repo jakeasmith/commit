@@ -2,6 +2,8 @@
 
 A tool to aid in standardizing commit messages. Based on this wonderful emoji based [standard Git Commit Message format by @slashsBin](https://github.com/slashsBin/styleguide-git-commit-message).
 
+![Example output](docs/example.gif)
+
 ## Setup
 
 - Clone the repo

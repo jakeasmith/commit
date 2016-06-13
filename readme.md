@@ -1,6 +1,6 @@
 # Standardized Commit Messages
 
-A tool to aid in standardizing commit messages. Based on this wonderful emoji based [standard Git Commit Message format by @slashsBin](https://githumb.com/slashsBin/styleguide-git-commit-message).
+A tool to aid in standardizing commit messages. Based on this wonderful emoji based [standard Git Commit Message format by @slashsBin](https://github.com/slashsBin/styleguide-git-commit-message).
 
 ## Setup
 

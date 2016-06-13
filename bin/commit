@@ -1,0 +1,76 @@
+#!/usr/bin/php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$climate = new \League\CLImate\CLImate();
+
+$climate->flank('Lets make a commit message', '-', 20);
+
+// Capture Emoji first --------------------------------------------------------
+$climate->green('Which emoji will we need?');
+$options = [
+    ':art:' => 'Improving the format/structure of the code',
+    ':racehorse:' => 'Improving performance',
+    ':books:' => 'Writing docs',
+    ':bug:' => 'Reporting a bug',
+    ':ambulance:' => 'Fixing a bug',
+    ':penguin:' => 'Fixing something on Linux',
+    ':apple:' => 'Fixing something on Mac OS',
+    ':checkered_flag:' => 'Fixing something on Windows',
+    ':fire:' => 'Removing code or files',
+    ':white_check_mark:' => 'Adding tests',
+    ':green_heart:' => 'Fixing the CI build',
+    ':lock:' => 'Dealing with security',
+    ':arrow_up:' => 'Upgrading dependencies',
+    ':arrow_down:' => 'Downgrading dependencies',
+    ':shirt:' => 'Removing linter/strict/deprecation warnings',
+    ':lipstick:' => 'Improving UI/Cosmetic',
+    ':construction:' => 'WIP(Work In Progress) Commits',
+    ':gem:' => 'New Release',
+    ':bookmark:' => 'Version Tags',
+    ':tada:' => 'Initial Commit',
+    ':speaker:' => 'Adding Logging',
+    ':mute:' => 'Reducing Logging',
+    ':sparkles:' => 'Introducing New Features',
+    ':zap:' => 'Introducing Backward-InCompatible Features',
+    ':bulb:' => 'New Idea',
+    ':snowflake:' => 'Changing Configuration',
+    ':ribbon:' => 'Customer requested application Customization',
+    ':rocket:' => 'Anything related to Deployments/DevOps',
+];
+
+$input        = $climate->checkboxes('Check all that apply:', $options);
+$emojiList    = $input->prompt();
+$emojiSpacing = str_repeat('# ', count($emojiList));
+$emojiList    = implode(' ', $emojiList);
+
+// Create the rest of the subject line -------------------------------------------
+$climate->green('Complete the subject line below:');
+
+$climate->yellow('Use the Present Tense ("Add feature" not "Added feature").');
+$climate->yellow('Use the Imperative Mood ("Move cursor to..." not "Moves cursor to...").');
+$climate->yellow('Make it shorter than the yellow line.');
+$climate->yellow('--------------------------------------------------------------------------------');
+$subjectLine = $climate->input($emojiSpacing)->prompt();
+$subjectLine = $emojiList . ' ' . $subjectLine;
+
+// Create the message body ----------------------------------------------------
+$climate->green('Now for the message body. You can use MarkDown here.');
+$messageBody = $climate->input('Commit body:')->prompt();
+
+// Get any issue task links ---------------------------------------------------
+$climate->green('Include any GitHub Issue/Phabricator/Jira Task ID References.');
+$climate->green('Ex. Issue #27, Ref T27 or Ref T27, T56 or Fixes T8.');
+$taskLinks = $climate->input('Task links:')->prompt();
+
+// Display the subject line
+$message = "{$subjectLine}";
+if (!empty($messageBody)) {
+    $message .= PHP_EOL . PHP_EOL . $messageBody;
+}
+if (!empty($taskLinks)) {
+    $message .= PHP_EOL . PHP_EOL . $taskLinks;
+}
+
+file_put_contents($argv[1], $message);

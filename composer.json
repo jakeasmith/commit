@@ -1,0 +1,13 @@
+{
+    "name": "smith-acme/commit",
+    "require": {
+        "league/climate": "^3.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jake A. Smith",
+            "email": "theman@jakeasmith.com"
+        }
+    ]
+}

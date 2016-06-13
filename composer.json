@@ -1,5 +1,5 @@
 {
-    "name": "smith-acme/commit",
+    "name": "smacme/commit",
     "require": {
         "league/climate": "^3.2"
     },

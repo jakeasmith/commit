@@ -3,41 +3,53 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// Prompt for commit builder --------------------------------------------------
 $climate = new \League\CLImate\CLImate();
 
-$climate->flank('Lets make a commit message', '-', 20);
+// Check fall thru to the default editor --------------------------------------
+$input = $climate->input('Use the commit builder? (y/n) [y]:');
+$input->accept(['y', 'n']);
+$input->defaultTo('y');
+
+$response = $input->prompt();
+if ($response === 'n') {
+    passthru('"${EDITOR:-${VISUAL:-vim}}" ' . $argv[1]);
+    echo PHP_EOL;
+    exit;
+}
 
 // Capture Emoji first --------------------------------------------------------
+$climate->flank('Lets make a commit message', '-', 20);
 $climate->green('Which emoji will we need?');
 $options = [
-    ':art:' => 'Improving the format/structure of the code',
-    ':racehorse:' => 'Improving performance',
-    ':books:' => 'Writing docs',
-    ':bug:' => 'Reporting a bug',
-    ':ambulance:' => 'Fixing a bug',
-    ':penguin:' => 'Fixing something on Linux',
-    ':apple:' => 'Fixing something on Mac OS',
-    ':checkered_flag:' => 'Fixing something on Windows',
-    ':fire:' => 'Removing code or files',
+    ':art:'              => 'Improving the format/structure of the code',
+    ':racehorse:'        => 'Improving performance',
+    ':books:'            => 'Writing docs',
+    ':bug:'              => 'Reporting a bug',
+    ':ambulance:'        => 'Fixing a bug',
+    ':penguin:'          => 'Fixing something on Linux',
+    ':apple:'            => 'Fixing something on Mac OS',
+    ':checkered_flag:'   => 'Fixing something on Windows',
+    ':fire:'             => 'Removing code or files',
     ':white_check_mark:' => 'Adding tests',
-    ':green_heart:' => 'Fixing the CI build',
-    ':lock:' => 'Dealing with security',
-    ':arrow_up:' => 'Upgrading dependencies',
-    ':arrow_down:' => 'Downgrading dependencies',
-    ':shirt:' => 'Removing linter/strict/deprecation warnings',
-    ':lipstick:' => 'Improving UI/Cosmetic',
-    ':construction:' => 'WIP(Work In Progress) Commits',
-    ':gem:' => 'New Release',
-    ':bookmark:' => 'Version Tags',
-    ':tada:' => 'Initial Commit',
-    ':speaker:' => 'Adding Logging',
-    ':mute:' => 'Reducing Logging',
-    ':sparkles:' => 'Introducing New Features',
-    ':zap:' => 'Introducing Backward-InCompatible Features',
-    ':bulb:' => 'New Idea',
-    ':snowflake:' => 'Changing Configuration',
-    ':ribbon:' => 'Customer requested application Customization',
-    ':rocket:' => 'Anything related to Deployments/DevOps',
+    ':green_heart:'      => 'Fixing the CI build',
+    ':lock:'             => 'Dealing with security',
+    ':arrow_up:'         => 'Upgrading dependencies',
+    ':arrow_down:'       => 'Downgrading dependencies',
+    ':shirt:'            => 'Removing linter/strict/deprecation warnings',
+    ':lipstick:'         => 'Improving UI/Cosmetic',
+    ':construction:'     => 'WIP(Work In Progress) Commits',
+    ':gem:'              => 'New Release',
+    ':bookmark:'         => 'Version Tags',
+    ':tada:'             => 'Initial Commit',
+    ':speaker:'          => 'Adding Logging',
+    ':mute:'             => 'Reducing Logging',
+    ':sparkles:'         => 'Introducing New Features',
+    ':zap:'              => 'Introducing Backward-InCompatible Features',
+    ':bulb:'             => 'New Idea',
+    ':snowflake:'        => 'Changing Configuration',
+    ':ribbon:'           => 'Customer requested application Customization',
+    ':rocket:'           => 'Anything related to Deployments/DevOps',
 ];
 
 $input        = $climate->checkboxes('Check all that apply:', $options);

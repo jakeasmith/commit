@@ -30,6 +30,7 @@ $options = [
     ':penguin:'          => 'Fixing something on Linux',
     ':apple:'            => 'Fixing something on Mac OS',
     ':checkered_flag:'   => 'Fixing something on Windows',
+    ':vhs:'              => 'Deprecating code',
     ':fire:'             => 'Removing code or files',
     ':white_check_mark:' => 'Adding tests',
     ':green_heart:'      => 'Fixing the CI build',

@@ -1,4 +1,5 @@
 .DS_Store
 .idea
+.emoji_usage
 composer.lock
 vendor

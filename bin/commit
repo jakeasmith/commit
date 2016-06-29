@@ -1,6 +1,9 @@
 #!/usr/bin/php
 <?php
 
+use Smacme\Commit\EmojiList;
+use Smacme\Commit\EmojiUsage;
+
 require __DIR__ . '/../vendor/autoload.php';
 
 // Prompt for commit builder --------------------------------------------------
@@ -21,42 +24,16 @@ if ($response === 'n') {
 // Capture Emoji first --------------------------------------------------------
 $climate->flank('Lets make a commit message', '-', 20);
 $climate->green('Which emoji will we need?');
-$options = [
-    ':art:'              => 'Improving the format/structure of the code',
-    ':racehorse:'        => 'Improving performance',
-    ':books:'            => 'Writing docs',
-    ':bug:'              => 'Reporting a bug',
-    ':ambulance:'        => 'Fixing a bug',
-    ':penguin:'          => 'Fixing something on Linux',
-    ':apple:'            => 'Fixing something on Mac OS',
-    ':checkered_flag:'   => 'Fixing something on Windows',
-    ':vhs:'              => 'Deprecating code',
-    ':fire:'             => 'Removing code or files',
-    ':white_check_mark:' => 'Adding tests',
-    ':green_heart:'      => 'Fixing the CI build',
-    ':lock:'             => 'Dealing with security',
-    ':arrow_up:'         => 'Upgrading dependencies',
-    ':arrow_down:'       => 'Downgrading dependencies',
-    ':shirt:'            => 'Removing linter/strict/deprecation warnings',
-    ':lipstick:'         => 'Improving UI/Cosmetic',
-    ':construction:'     => 'WIP(Work In Progress) Commits',
-    ':gem:'              => 'New Release',
-    ':bookmark:'         => 'Version Tags',
-    ':tada:'             => 'Initial Commit',
-    ':speaker:'          => 'Adding Logging',
-    ':mute:'             => 'Reducing Logging',
-    ':sparkles:'         => 'Introducing New Features',
-    ':zap:'              => 'Introducing Backward-InCompatible Features',
-    ':bulb:'             => 'New Idea',
-    ':snowflake:'        => 'Changing Configuration',
-    ':ribbon:'           => 'Customer requested application Customization',
-    ':rocket:'           => 'Anything related to Deployments/DevOps',
-];
 
-$input        = $climate->checkboxes('Check all that apply:', $options);
-$emojiList    = $input->prompt();
-$emojiSpacing = str_repeat('# ', count($emojiList));
-$emojiList    = implode(' ', $emojiList);
+$emojiList  = new EmojiList();
+$emojiUsage = new EmojiUsage(realpath(__DIR__ . '/..'));
+
+$options       = $emojiUsage->sortByUsage($emojiList->get());
+$input         = $climate->checkboxes('Check all that apply:', $options);
+$emojiSelected = $input->prompt();
+$emojiUsage->useEmojii($emojiSelected);
+$emojiSpacing  = str_repeat('# ', count($emojiSelected));
+$emojiSelected = implode(' ', $emojiSelected);
 
 // Create the rest of the subject line -------------------------------------------
 $climate->green('Complete the subject line below:');
@@ -66,7 +43,7 @@ $climate->yellow('Use the Imperative Mood ("Move cursor to..." not "Moves cursor
 $climate->yellow('Make it shorter than the yellow line.');
 $climate->yellow('--------------------------------------------------------------------------------');
 $subjectLine = $climate->input($emojiSpacing)->prompt();
-$subjectLine = $emojiList . ' ' . $subjectLine;
+$subjectLine = $emojiSelected . ' ' . $subjectLine;
 
 // Create the message body ----------------------------------------------------
 $climate->green('Now for the message body. You can use MarkDown here.');

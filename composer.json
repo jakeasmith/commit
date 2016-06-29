@@ -9,5 +9,10 @@
             "name": "Jake A. Smith",
             "email": "theman@jakeasmith.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Smacme\\Commit\\": "src"
+        }
+    }
 }

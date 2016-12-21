@@ -35,6 +35,7 @@ class EmojiList
         '❄️' => 'Changing Configuration',
         '🎀' => 'Customer requested application Customization',
         '🚀' => 'Anything related to Deployments/DevOps',
+        '🐬' => 'MySQL Database scripts/schema',
     ];
 
     public function get()

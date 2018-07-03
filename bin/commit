@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use Smacme\Commit\EmojiList;
+use Smacme\Commit\EmojiGithubList;
 use Smacme\Commit\EmojiUsage;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -25,7 +25,7 @@ if ($response === 'n') {
 $climate->flank('Lets make a commit message', '-', 20);
 $climate->green('Which emoji will we need?');
 
-$emojiList  = new EmojiList();
+$emojiList  = new EmojiGithubList();
 $emojiUsage = new EmojiUsage(realpath(__DIR__ . '/..'));
 
 $options       = $emojiUsage->sortByUsage($emojiList->get());
